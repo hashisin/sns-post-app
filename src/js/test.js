@@ -1,1 +1,1 @@
-console.log('tesetsetsresdgfhjfd,kmf.g');
+console.log('hoge');
