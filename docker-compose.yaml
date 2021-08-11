@@ -1,0 +1,11 @@
+version: "3"
+services:
+  node:
+    build: ./app
+    volumes:
+      - ./app/myapp:/myapp
+    ports:
+      - "8080:8080"
+      - "18080:18080"
+    stdin_open: true
+    tty: true
