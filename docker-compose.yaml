@@ -1,5 +1,22 @@
 version: "3"
 services:
+  db:
+    build: ./db
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: forapp
+      MYSQL_USER: snsapp
+      MYSQL_PASSWORD: snsapp
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+    networks:
+      - default
   node:
     build: ./app
     volumes:
@@ -9,3 +26,19 @@ services:
       - "18080:18080"
     stdin_open: true
     tty: true
+    networks:
+      - default
+  api:
+    build: ./api
+    volumes:
+      - ./api/src:/code
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    networks:
+      - default
+    depends_on:
+      - db
+networks:
+  default:
